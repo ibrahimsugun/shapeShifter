@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Resim uzantısı değiştirme ve İndirme</title>
+  </head>
+  <body>
+    <h1>Resim uzantısı değiştirme ve İndirme</h1>
+    <input type="file" id="input" multiple>
+    <button onclick="convertAndDownload()">Dönüştür ve İndir</button>
+    <script>
+      function convertAndDownload() {
+        const input = document.getElementById("input");
+        const files = input.files;
+
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const reader = new FileReader();
+
+          reader.onload = function (event) {
+            const img = new Image();
+            img.onload = function () {
+              const canvas = document.createElement("canvas");
+              const ctx = canvas.getContext("2d");
+              canvas.width = img.width;
+              canvas.height = img.height;
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+              const mimeType = "image/webp";
+              const quality = 0.8;
+              canvas.toBlob(function (blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = file.name.replace(/\.[^/.]+$/, ".webp");
+                a.click();
+                URL.revokeObjectURL(url);
+              }, mimeType, quality);
+            };
+            img.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title>Resim uzantısı değiştirme ve İndirme</title>
+  </head>
+  <body>
+    <h1>Resim uzantısı değiştirme ve İndirme</h1>
+    <input type="file" id="input" multiple>
+    <button onclick="resizeAndDownload()">Boyutlandır ve İndir</button>
+    <script>
+      function resizeAndDownload() {
+        const input = document.getElementById("input");
+        const files = input.files;
+        const downloadDelay = 1500; // Yarım saniye bekleme süresi (milisaniye cinsinden)
+
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const reader = new FileReader();
+          const delay = i * downloadDelay; // Her resim için artan bekleme süresi
+
+          reader.onload = function (event) {
+            const img = new Image();
+            img.onload = function () {
+              const canvas = document.createElement("canvas");
+              const ctx = canvas.getContext("2d");
+              canvas.width = img.width;
+              canvas.height = img.height;
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+              const MAX_WIDTH = 750;
+              const MAX_HEIGHT = 750;
+              let width = canvas.width;
+              let height = canvas.height;
+
+              if (width > height) {
+                if (width > MAX_WIDTH) {
+                  height *= MAX_WIDTH / width;
+                  width = MAX_WIDTH;
+                }
+              } else {
+                if (height > MAX_HEIGHT) {
+                  width *= MAX_HEIGHT / height;
+                  height = MAX_HEIGHT;
+                }
+              }
+
+              canvas.width = width;
+              canvas.height = height;
+              const ctx2 = canvas.getContext("2d");
+              ctx2.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+              setTimeout(function () {
+                canvas.toBlob(function (blob) {
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = url;
+                  a.download = file.name.replace(/\.[^/.]+$/, ".webp");
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }, "image/webp", 0.8);
+              }, delay);
+            };
+            img.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    </script>
+  </body>
+</html> -->
+
+
