@@ -22,8 +22,8 @@ function resizeAndDownload() {
         canvas.height = img.height * scale;
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        const MAX_WIDTH = 400;
-        const MAX_HEIGHT = 400;
+        const MAX_WIDTH = 582;
+        const MAX_HEIGHT = 792;
         let width = canvas.width;
         let height = canvas.height;
 
